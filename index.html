@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <title>VGG - JSTodos</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="app-title">VGG - <sup>JS</sup>Todos</h1>
+
+      <form id="todos" class="js-form">
+        <label>What would you like to do</label>
+        <input 
+        type="text"
+          class="js-todo-input"
+          name="todoName"
+          id="todoName"
+          aria-label="What would you like to do"
+          placeholder=""
+          required
+        /> 
+        <label>When would you like this done</label>
+        <input
+              type="datetime-local"
+              name="todoTimestamp"
+              id="todoTimestamp"
+              class="js-todo-input"
+              aria-label="When would you like this done"
+              placeholder=""
+              required
+            />
+            <label>Add a little note</label>
+            <textarea
+            name="todoDescription"
+            id="todoDescription"
+            rows="5"
+            class="form-group"
+            required
+          ></textarea>
+          <input class="todo-submit" type="submit" id="click" value="+">
+      </form>
+      <div class="">
+         <ul id="todoLists"></ul>
+      </div>
+    </div>
+    </div>
+    <script type="text/javascript" src="index.js"></script>
+  </body>
+</html>

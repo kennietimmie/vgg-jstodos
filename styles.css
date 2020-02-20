@@ -1,0 +1,140 @@
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  line-height: 1.4;
+  background-color: skyblue;
+}
+
+.container {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #333;
+  height: 90vh;
+  margin-top: 5vh;
+  margin-bottom: 5vh;
+  overflow-y: auto;
+}
+
+.app-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+form {
+  position: relative;
+  width: 100%;
+}
+
+input[type="text"],
+input[type="datetime-local"],
+textarea {
+  width: 100%;
+  padding: 25px 10px 5px 10px;
+  border-radius: 4px;
+  border: 1px solid rgb(204, 200, 200);
+  box-shadow: none !important;
+  outline: none !important;
+  margin-bottom: 10px;
+}
+
+label {
+  position: absolute;
+  margin: 5px 10px;
+  opacity: 0.7;
+  font-size: small;
+}
+
+.todo-submit {
+  border-radius: 0 5px 5px 0;
+  border: none;
+  background: black;
+  color: skyblue;
+  font-size: 1.4em;
+  font-weight: bold;
+  padding: 10px 44px;
+  margin: auto;
+  width: 100%;
+  cursor: pointer;
+}
+
+li {
+  position: relative;
+}
+.toast {
+  margin: 10px auto;
+  width: 100%;
+  overflow: hidden;
+  font-size: 0.875rem;
+  background-color: rgba(255, 255, 255, 0.85);
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  opacity: 1;
+  border-radius: 0.25rem;
+  position: relative;
+}
+
+.toast-header {
+  display: flex;
+  align-items: center;
+  padding: 5px 5px 5px 50px;
+  color: #6c757d;
+  background-color: rgba(255, 255, 255, 0.85);
+  background-clip: padding-box;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+.toast-bar {
+  margin: 0 5px 0 10px;
+  width: 20px !important;
+  height: 20px !important;
+  background-color: rgb(0, 122, 255);
+  position: absolute;
+  z-index: 10;
+  top: 8px;
+}
+
+input.toast-bar:checked ~ .toast {
+  opacity: 0.5;
+}
+.toast-title {
+  margin-right: auto;
+}
+
+.toast-time {
+  margin: 0 10px 0 5px;
+}
+.close {
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+  appearance: none;
+  float: right;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  opacity: 0.5;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.close:hover {
+  color: red;
+}
+.toast-body {
+  padding: 0.75rem;
+}

@@ -1,9 +1,23 @@
+class LocalStorage {
+  static setItem(key, value) {
+    window.localStorage.setItem(key, value);
+  }
+
+  static getItem(key) {
+    return window.localStorage.getItem(key);
+  }
+
+  static clear() {
+    window.localStorage.clear();
+  }
+}
 /**
  * Helps in building the DOM Elements
  */
 class TodoDOMBuilder {
-  constructor(targetElement, name, timestamp, content) {
+  constructor(targetParent, targetElement, name, timestamp, content) {
     this.targetElement = targetElement;
+    this.targetParent = targetParent;
     this.element = null;
     this.li = TodoDOMBuilder.createElement("li", {
       id: ""
@@ -51,7 +65,17 @@ class TodoDOMBuilder {
       TodoDOMBuilder.appendChild(this.li, this.toastInput),
       this.container
     );
-    TodoDOMBuilder.appendChild(this.targetElement, this.element);
+    if (this.targetElement === null) {
+      this.targetElement = TodoDOMBuilder.createElement("ul", {
+        id: "todoLists"
+      });
+      TodoDOMBuilder.appendChild(this.targetParent, this.targetElement);
+    }
+
+    LocalStorage.setItem(
+      "todos",
+      TodoDOMBuilder.appendChild(this.targetElement, this.element).outerHTML
+    );
   }
   /**
    * Create DOM elements, with specific attribute on the fly
@@ -76,14 +100,20 @@ class TodoDOMBuilder {
   get getTodoDOM() {
     return this.element;
   }
+
+  deleteTodoDOM() {
+    this.element.remove();
+    localStorage.clear();
+    localStorage.setItem("todo", this.targetElement.outerHTML);
+  }
 }
 
 /**
  * Makes the todo
  */
 class Todo extends TodoDOMBuilder {
-  constructor(targetElement, name, timestamp, content) {
-    super(targetElement, name, timestamp, content);
+  constructor(targetParent, targetElement, name, timestamp, content) {
+    super(targetParent, targetElement, name, timestamp, content);
     this.todo = {
       targetElement: targetElement,
       element: super.getTodoDOM,
@@ -94,14 +124,36 @@ class Todo extends TodoDOMBuilder {
       }
     };
     this.todo.element.querySelector(".close").addEventListener("click", () => {
-      this.todo.element.remove();
+      this.deleteTodo();
     });
   }
   /**
-   * Get a todo
+   * Create a todo
    */
   get getTodo() {
     return this.todo;
+  }
+
+  deleteTodo() {
+    this.deleteTodoDOM();
+  }
+
+  static reloadRender(parent) {
+    if (localStorage.getItem("todos")) {
+      //console.log(typeof(localStorage.getItem("todos")))
+      let todos = new DOMParser().parseFromString(
+        LocalStorage.getItem("todos"),
+        "text/html"
+      );
+      parent.appendChild(todos.body.firstElementChild);
+      parent.querySelectorAll(".close").forEach(element => {
+        element.addEventListener("click", el => {
+          element.parentElement.parentElement.parentElement.remove();
+          localStorage.clear();
+          localStorage.setItem("todos", parent.firstElementChild.outerHTML);
+        });
+      });
+    }
   }
 }
 
@@ -110,17 +162,28 @@ let todoName = formElement.querySelector("#todoName");
 let todoTimestamp = formElement.querySelector("#todoTimestamp");
 let todoDescription = formElement.querySelector("#todoDescription");
 
+let targetParent = document.querySelector("#todoContainer");
+
+document.addEventListener(
+  "DOMContentLoaded",
+  Todo.reloadRender(targetParent),
+  false
+);
+
 try {
   formElement.onsubmit = e => {
     e.preventDefault();
     let targetElement = document.querySelector("#todoLists");
+
     let todo = new Todo(
+      targetParent,
       targetElement,
       todoName.value.trim(),
-      `${new Date(todoTimestamp.value).toDateString()} 
-      ${new Date(todoTimestamp.value).toLocaleTimeString()} `,
+      `${new Date(todoTimestamp.value).toDateString()} ${new Date(
+        todoTimestamp.value
+      ).toLocaleTimeString()} `,
       todoDescription.value.trim()
     );
-    console.log(todo.getTodo);
+    console.log(LocalStorage.getItem("todos"));
   };
 } catch (e) {}
